@@ -26,20 +26,3 @@
         font-size: 1.8rem;
     }
 }
-.error, .correcto {
-    display: block;
-    text-align: center;
-    padding: 1rem 0;
-    text-transform: uppercase;
-    font-weight: $black;
-    font-size: 1.6rem !important;
-    border-radius: 1rem;
-}
-.error {    
-    background-color: #ff6961;
-    color: #9a2f2a!important;
-}
-.correcto {
-    background-color: #a9d39e;
-    color: #4f6c4b!important;
-}

@@ -8,10 +8,12 @@
     }
 
     .dark-mode-boton {
-        width: 2rem;
+        width: 3rem;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
         filter: invert(100%);
         @include tablet {
-            padding-bottom: 1rem;
+            margin-top: 0;
         }
 
         &:hover {
@@ -68,7 +70,7 @@
     }
 
     img {
-        width: 2rem;
+        width: 5rem;
         margin: 1rem 0;
     }
 }

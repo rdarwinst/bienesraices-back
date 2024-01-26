@@ -6,9 +6,4 @@
     text-transform: uppercase;
     margin: 1rem 0;
 
-    &.formError {
-        background-color: lighten($rojo, 5%);
-        border: 2px solid darken($rojo, 15%);
-        border-radius: .5rem;
-    }
 }

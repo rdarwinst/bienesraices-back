@@ -50,3 +50,21 @@ h3 {
 h4 {
     font-size: 2.6rem;
 }
+.error, .correcto {
+    display: block;
+    text-align: center;
+    padding: 1rem 0;
+    text-transform: uppercase;
+    font-weight: $black;
+    font-size: 1.6rem !important;
+    border-radius: 1rem;
+    color: $blanco!important;
+}
+.error {    
+    background-color: $rojo;
+    border: 1px solid darken($rojo, 10%);
+}
+.correcto {
+    background-color: lighten($verde, 30%);
+    border: 1px solid darken($verde, 10%);
+}

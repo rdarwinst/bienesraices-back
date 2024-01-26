@@ -4,6 +4,11 @@ require '../../includes/config/database.php';
 
 $db = conectarDB();
 
+// Consultar el listado de los vendedores, desde la BD
+
+$consulta = "SELECT * FROM vendedores";
+$resultado = mysqli_query($db, $consulta);
+
 $errores = [];
 
 $titulo = '';
@@ -12,6 +17,7 @@ $descripcion = '';
 $habitaciones = '';
 $wc = '';
 $estacionamiento = '';
+$creado = date('Y/m/d');
 $vendedores_id = '';
 
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
@@ -19,13 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     var_dump($_POST);
     echo "</pre>";
  */
-    $titulo = $_POST['titulo'];
-    $precio = $_POST['precio'];
-    $descripcion = $_POST['descripcion'];
-    $habitaciones = $_POST['habitaciones'];
-    $wc = $_POST['wc'];
-    $estacionamiento = $_POST['estacionamiento'];
-    $vendedores_id = $_POST['vendedor'];
+    $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
+    $precio = mysqli_real_escape_string($db, $_POST['precio']);
+    $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
+    $habitaciones = mysqli_real_escape_string($db, $_POST['habitaciones']);
+    $wc = mysqli_real_escape_string($db, $_POST['wc']);
+    $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
+    $vendedores_id = mysqli_real_escape_string($db, $_POST['vendedor']);
 
     if (!$titulo) {
         $errores[] = "Debes añadir un titulo.";
@@ -56,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     if (empty($errores)) {
         // Isertar en la base de datos
 
-        $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedores_id) VALUES ('$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedores_id')";
+        $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id) VALUES ('$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedores_id')";
 
         // echo $query;
 
@@ -64,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $resultado = mysqli_query($db, $query);
 
         if ($resultado) {
-            echo "Insertado Correctamente";
+            header('Location: /bienesraices/admin/index.php');
         }
     }
 }
@@ -78,7 +84,7 @@ incluirTemplate('header');
     <a href="/bienesraices/admin/index.php" class="boton boton-verde">Regresar</a>
 
     <?php foreach ($errores as $error) { ?>
-        <div class="alerta formError">
+        <div class="alerta error">
             <?php echo $error; ?>
         </div>
     <?php } ?>
@@ -91,7 +97,7 @@ incluirTemplate('header');
             <input type="text" name="titulo" id="titulo" placeholder="Titulo de la propiedad." value="<?php echo $titulo; ?>">
 
             <label for="precio">Precio</label>
-            <input type="number" name="precio" id="precio" placeholder="Precio de tu propiedad." value="<?php echo $titulo; ?>">
+            <input type="number" name="precio" id="precio" placeholder="Precio de tu propiedad." value="<?php echo $precio; ?>">
 
             <label for="imagen">Imagen</label>
             <input type="file" name="imagen" id="imagen" accept="image/jpeg, image/png">
@@ -115,9 +121,10 @@ incluirTemplate('header');
             <legend>Vendedor</legend>
 
             <select name="vendedor" id="vendedor">
-                <option value="" selected>-- Seleccionar --</option>
-                <option value="1">Darwin</option>
-                <option value="2">Keren</option>
+                <option value="">-- Seleccionar --</option>
+                <?php while ($vendedor = mysqli_fetch_assoc($resultado)) : ?>
+                    <option <?php echo $vendedores_id === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>"><?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?></option>
+                <?php endwhile; ?>
             </select>
         </fieldset>
         <input type="submit" value="Crear Propiedad" class="boton boton-verde">
