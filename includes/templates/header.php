@@ -14,7 +14,7 @@
     <header class="header <?php echo $inicio ? 'inicio' : ''; ?>">
         <div class="contenedor contenido-header">
             <div class="barra">
-                <a href="/bienesraices/index.php" class="logo">
+                <a href="/bienesraices" class="logo">
                     <img src="/bienesraices/build/img/logo.svg" alt="Logo de la Empresa">
                 </a>
 

@@ -5,7 +5,7 @@
 
     <main class="contenedor">
         <h1>Administrador de Biener Raices</h1>
-        <a href="/bienesraices/admin/propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
+        <a href="./propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
     </main>
 
 <?php incluirTemplate('footer'); ?>

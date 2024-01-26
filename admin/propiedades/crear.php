@@ -81,7 +81,7 @@ incluirTemplate('header');
 
 <main class="contenedor">
     <h1>Crear Propiedad</h1>
-    <a href="/bienesraices/admin/index.php" class="boton boton-verde">Regresar</a>
+    <a href="/bienesraices/admin" class="boton boton-verde">Regresar</a>
 
     <?php foreach ($errores as $error) { ?>
         <div class="alerta error">
@@ -89,7 +89,7 @@ incluirTemplate('header');
         </div>
     <?php } ?>
 
-    <form action="/bienesraices/admin/propiedades/crear.php" class="formulario" method="post" autocomplete="off">
+    <form action="./crear.php" class="formulario" method="post" autocomplete="off">
         <fieldset>
             <legend>Información General</legend>
 

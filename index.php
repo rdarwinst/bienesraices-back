@@ -1,6 +1,6 @@
 <?php 
     require 'includes/funciones.php';    
-    incluirTemplate('header', $inicio  = true);
+    incluirTemplate('header', true);
 ?>
 
     <main class="contenedor">
