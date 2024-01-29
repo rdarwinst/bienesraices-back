@@ -17,14 +17,11 @@ $descripcion = '';
 $habitaciones = '';
 $wc = '';
 $estacionamiento = '';
-$creado = date('Y/m/d');
 $vendedores_id = '';
 
+
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
-    /*     echo "<pre>";
-    var_dump($_POST);
-    echo "</pre>";
- */
+
     $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
     $precio = mysqli_real_escape_string($db, $_POST['precio']);
     $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
@@ -32,6 +29,12 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     $wc = mysqli_real_escape_string($db, $_POST['wc']);
     $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
     $vendedores_id = mysqli_real_escape_string($db, $_POST['vendedor']);
+    $creado = date('Y/m/d');
+
+    // Asignar files a una imagen 
+
+    $imagen = $_FILES['imagen'];
+
 
     if (!$titulo) {
         $errores[] = "Debes añadir un titulo.";
@@ -55,14 +58,39 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $errores[] = "Debes elegir un vendedor.";
     }
 
-    // echo "<pre>";
-    // var_dump($errores);
-    // echo "</pre>";
+    if (!$imagen['name'] || $imagen['error']) {
+        $errores[] = "La imagen es obligatoria.";
+    }
+
+    // Validar por peso 5MB
+
+    $medida = 1024 * 5120;
+    if ($imagen['size'] > $medida) {
+        $errores[] = "La imagen es muy pesada.";
+    }
 
     if (empty($errores)) {
+
+        // Subida de imagenes en PHP
+
+        //Crear una carpeta
+        $carpetaImagenes = '../../imagenes/';
+
+        if (!is_dir($carpetaImagenes)) {
+            mkdir($carpetaImagenes);
+        }
+
+        // Generar un nombre unico para la imagen
+        $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+
+
+        // Subir la imagen a la carpeta
+
+        move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+
         // Isertar en la base de datos
 
-        $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id) VALUES ('$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedores_id')";
+        $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id) VALUES ('$titulo', '$precio', '$nombreImagen', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedores_id')";
 
         // echo $query;
 
@@ -70,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $resultado = mysqli_query($db, $query);
 
         if ($resultado) {
-            header('Location: /bienesraices/admin/index.php');
+            header('Location: /bienesraices/admin?resultado=1');
         }
     }
 }
@@ -89,7 +117,7 @@ incluirTemplate('header');
         </div>
     <?php } ?>
 
-    <form action="./crear.php" class="formulario" method="post" autocomplete="off">
+    <form action="./crear.php" class="formulario" method="post" autocomplete="off" enctype="multipart/form-data">
         <fieldset>
             <legend>Información General</legend>
 
