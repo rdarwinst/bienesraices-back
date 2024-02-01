@@ -57,14 +57,12 @@ h4 {
     text-transform: uppercase;
     font-weight: $black;
     font-size: 1.6rem !important;
-    border-radius: 1rem;
+    border-radius: .5rem;
     color: $blanco!important;
 }
 .error {    
     background-color: $rojo;
-    border: 1px solid darken($rojo, 10%);
 }
 .correcto {
     background-color: lighten($verde, 30%);
-    border: 1px solid darken($verde, 10%);
 }
