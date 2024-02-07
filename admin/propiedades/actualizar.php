@@ -77,10 +77,6 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $errores[] = "Debes elegir un vendedor.";
     }
 
-    if (!$imagen['name'] || $imagen['error']) {
-        $errores[] = "La imagen es obligatoria.";
-    }
-
     // Validar por peso 5MB
 
     $medida = 1024 * 5120;
@@ -99,25 +95,38 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
             mkdir($carpetaImagenes);
         }
 
-        // Generar un nombre unico para la imagen
-        $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+        $nombreImagen = '';
+
+        if ($imagen['name']) {
+
+            // Eliminar imagen anterior
+            unlink($carpetaImagenes . $propiedad['imagen']);
+
+            // Generar un nombre unico para la imagen
+            $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
 
 
-        // Subir la imagen a la carpeta
+            // Subir la imagen a la carpeta
 
-        move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
 
-        // Isertar en la base de datos
+            // Isertar en la base de datos
 
-        $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id) VALUES ('$titulo', '$precio', '$nombreImagen', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedores_id')";
+        } else {
+            $nombreImagen = $propiedad['imagen'];
+        }
+
+        $query = "UPDATE propiedades SET titulo = '{$titulo}', precio = {$precio}, imagen = '{$nombreImagen}', descripcion =  '{$descripcion}', habitaciones = {$habitaciones}, wc = {$wc}, estacionamiento = {$estacionamiento}, vendedores_id = {$vendedores_id} WHERE id = {$id}";
 
         // echo $query;
+
+
 
 
         $resultado = mysqli_query($db, $query);
 
         if ($resultado) {
-            header('Location: /bienesraices/admin?resultado=1');
+            header('Location: /bienesraices/admin?resultado=2');
         }
     }
 }
@@ -136,7 +145,7 @@ incluirTemplate('header');
         </div>
     <?php } ?>
 
-    <form action="./crear.php" class="formulario" method="post" autocomplete="off" enctype="multipart/form-data">
+    <form class="formulario" method="post" autocomplete="off" enctype="multipart/form-data">
         <fieldset>
             <legend>Información General</legend>
 
