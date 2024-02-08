@@ -1,4 +1,9 @@
 <?php
+require '../../includes/funciones.php';
+$auth = validarLogin();
+if(!$auth) {
+    header('Location: /bienesraices');
+}
 
 require '../../includes/config/database.php';
 
@@ -103,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     }
 }
 
-require '../../includes/funciones.php';
 incluirTemplate('header');
 ?>
 

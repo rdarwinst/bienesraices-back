@@ -1,6 +1,9 @@
 <?php
-
-
+require '../includes/funciones.php';
+$auth = validarLogin();
+if(!$auth) {
+    header('Location: /bienesraices');
+}
 // Importar la conexion
 require '../includes/config/database.php';
 $db = conectarDB();
@@ -40,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Incluye el template
-require '../includes/funciones.php';
 incluirTemplate('header');
 ?>
 
