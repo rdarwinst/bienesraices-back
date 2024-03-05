@@ -8,3 +8,7 @@ En el se están usando tecnicas como Lazyloading, formatos de multimedia para la
 ## Actualización
 El backend del proyecto se está construyendo con PHP en forma de codigo spaghetti, la base de datos esta hecha con MYSQL.
 Hasta el momento solo cuenta con insersión de datos. (Creación de propiedades).
+
+En este último commit se realizó el resto del CRUD, además de la posibilidad de iniciar sesión para agregarle un poco de seguridad al proyecto. 
+
+\*  Proximanente se actualizará a una version con PDO y Sentencias preparadas.\*
