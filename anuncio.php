@@ -1,5 +1,5 @@
 <?php 
-    require 'includes/funciones.php';    
+    require 'includes/app.php';    
     incluirTemplate('header');
 
     
@@ -12,7 +12,6 @@
     }
 
     // Importar conexion
-    require 'includes/config/database.php';
     $db = conectarDB();
 
     // Consulta Cosulta
@@ -50,7 +49,7 @@
                     <p><?php echo $propiedad['habitaciones']; ?></p>
                 </li>
             </ul>
-            <p><?php echo $propiedad['descripcion']; ?></p>
+            <p><?php echo nl2br($propiedad['descripcion']); ?></p>
         </div>
     </main>
 

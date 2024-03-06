@@ -1,5 +1,5 @@
 <?php
-    require 'includes/config/database.php';
+    require 'includes/app.php';
     $db = conectarDB();
 
     $errores = [];
@@ -42,7 +42,7 @@
                     $_SESSION['usuario'] = $usuario['email'];
                     $_SESSION['login'] = true;    
                     
-                    header('Location: /bienesraices/admin');
+                    header('Location: /bienesraices/admin/');
 
                 } else {                    
                     $errores[] = "El password es incorrecto";
@@ -54,8 +54,7 @@
         }
     }
 
-    // Incluye el header
-    require 'includes/funciones.php';
+    // Incluye el header    
     incluirTemplate('header');
 ?>
 

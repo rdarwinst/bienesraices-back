@@ -1,15 +1,10 @@
 <?php
-require '../includes/funciones.php';
-$auth = validarLogin();
-if (!$auth) {
-    header('Location: /bienesraices');
-}
-// Importar la conexion
-require '../includes/config/database.php';
+require '../includes/app.php';
+validarLogin();
 $db = conectarDB();
 
 // Escribir el query
-$query = "SELECT * FROM propiedades";
+$query = "SELECT * FROM propiedades ORDER BY creado DESC";
 
 // Consultar la bd
 $resultadoQuery = mysqli_query($db, $query);

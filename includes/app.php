@@ -1,5 +1,13 @@
 <?php
 
-define('ROOT_PATH', __DIR__);
-define('TEMPLATES_URL', __DIR__ . '/templates');
-define('FUNCTIONS_URL', __DIR__ . 'funciones.php');
+require 'funciones.php';
+require 'config/database.php';
+require __DIR__ . '/../vendor/autoload.php';
+
+// Conectarnos a la base de datos
+
+$db = conectarDB();
+
+use App\Propiedad;
+
+Propiedad::setDB($db);
