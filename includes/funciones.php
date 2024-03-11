@@ -1,4 +1,5 @@
 <?php
+declare (strict_types = 1);
 
 define('TEMPLATES_URL', __DIR__ . '/templates');
 define('FUNCTIONS_URL', __DIR__ . 'funciones.php');
@@ -24,3 +25,7 @@ function debuguear($variable) {
     exit;
 }
 
+function sanitizarHTML($input) {
+    $entrada = htmlspecialchars(strip_tags($input));
+    return $entrada;
+}

@@ -40,13 +40,13 @@ class Propiedad
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
-        $this->vendedores_id = $args['vendedores_id'] ?? '';
+        $this->vendedores_id = $args['vendedores_id'] ?? 1;
     }
 
     public function guardar()
     {
 
-        $atributos  = $this->sanitizarAtributos();                
+        $atributos  = $this->sanitizarAtributos();
 
         $query = "INSERT INTO propiedades ( ";
         $query .= join(', ', array_keys($atributos));
@@ -65,7 +65,7 @@ class Propiedad
     {
         $atributos = [];
         foreach (self::$columnasDB as $columna) {
-            if($columna === 'id') continue;
+            if ($columna === 'id') continue;
             $atributos[$columna] = $this->$columna;
         }
         return $atributos;
@@ -76,25 +76,28 @@ class Propiedad
         $atributos = $this->atributos();
         $sanitizado = [];
         foreach ($atributos as $key => $value) {
-            $sanitizado[$key] = htmlspecialchars(self::$db->escape_string($value));
+            $sanitizado[$key] = htmlspecialchars(strip_tags(self::$db->escape_string($value)));
         }
         return $sanitizado;
     }
 
-    public static function getErrores() {
+    public static function getErrores()
+    {
         return self::$errores;
     }
 
     // Subida de Archivos
-    public function  setImagen($imagen) {
+    public function  setImagen($imagen)
+    {
         // Asignar al atributo imagen el nombre de la imagen
-        if($imagen) {
-            $this -> imagen = $imagen;
+        if ($imagen) {
+            $this->imagen = $imagen;
         }
     }
 
     // Validacion del Form
-    public function validarForm() {
+    public function validarForm()
+    {
         if (!$this->titulo) {
             self::$errores[] = "Debes añadir un titulo.";
         }
@@ -116,10 +119,51 @@ class Propiedad
         if (!$this->vendedores_id) {
             self::$errores[] = "Debes elegir un vendedor.";
         }
-    
+
         if (!$this->imagen) {
             self::$errores[] = "La imagen es obligatoria.";
         }
         return self::$errores;
+    }
+
+    // Listar todas las pripiedades
+    public static function all()
+    {
+        $query = "SELECT * FROM propiedades ORDER BY creado DESC";
+
+        $resultado = self::consultarSQL($query);
+
+        return $resultado;
+    }
+
+    public static function consultarSQL($query)
+    {
+        // Realizar la consulta
+        $resultado = self::$db->query($query);
+
+        // Iterar resultados
+        $array = [];
+        while ($registro = $resultado->fetch_assoc()) {
+            $array[] = self::crearObjeto($registro);
+        }
+
+        // Liberar la memoria
+        $resultado->free();
+
+        // Retornar resultadps
+        return $array;
+    }
+
+    protected static function crearObjeto($registro)
+    {
+        $objeto = new self;
+
+        foreach ($registro as $key => $value) {
+            if (property_exists($objeto, $key)) {
+                $objeto->$key = $value;
+            }
+        }
+
+        return $objeto;
     }
 }

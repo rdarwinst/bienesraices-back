@@ -1,11 +1,8 @@
 <?php
-require '../../includes/funciones.php';
+require '../../includes/app.php';
 
-$auth = validarLogin();
+validarLogin();
 
-if(!$auth){
-    header('Location: /bienesraices');
-}
 
 // Validar url por id valido
 $id = $_GET['id'];
@@ -14,8 +11,6 @@ $id = filter_var($id, FILTER_VALIDATE_INT);
 if (!$id) {
     header('Location: /bienesraices/admin');
 }
-
-require '../../includes/config/database.php';
 
 $db = conectarDB();
 
