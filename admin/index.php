@@ -1,6 +1,5 @@
 <?php
 require '../includes/app.php';
-validarLogin();
 
 use App\Propiedad;
 
@@ -35,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Incluye el template
+validarLogin();
 incluirTemplate('header');
 ?>
 

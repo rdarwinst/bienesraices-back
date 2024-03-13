@@ -5,8 +5,6 @@ use App\Propiedad;
 use Intervention\Image\ImageManager as Image;
 use Intervention\Image\Drivers\Gd\Driver;
 
-validarLogin();
-
 $db = conectarDB();
 
 $propiedad = new Propiedad();
@@ -20,7 +18,7 @@ $errores = Propiedad::getErrores();
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
     // Crea una nueva instancia
-    $propiedad = new Propiedad($_POST);
+    $propiedad = new Propiedad($_POST['propiedad']);
 
     // Generar un nombre unico para la imagen
     $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
@@ -28,8 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     // Setear la Imagen
     // Realiza un Resize a la imagen con Intervention
     $manager = new Image(Driver::class);
-    if ($_FILES['imagen']['tmp_name']) {
-        $image = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600);
+    if ($_FILES['propiedad']['tmp_name']['imagen']) {
+        $image = $manager->read($_FILES['propiedad']['tmp_name']['imagen'])->cover(800, 600);
         $propiedad->setImagen($nombreImagen);
     }
 
@@ -56,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     }
 }
 
+validarLogin();
 incluirTemplate('header');
 ?>
 

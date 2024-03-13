@@ -1,5 +1,6 @@
 <?php
-    require 'includes/app.php';
+    require 'includes/app.php';    
+
     $db = conectarDB();
 
     $errores = [];
@@ -56,6 +57,14 @@
 
     // Incluye el header    
     incluirTemplate('header');
+
+    if(session_status()==='PHP_SESSION_NONE') {
+        session_start();
+    }
+    if(isset($_SESSION['usuario'])) {
+        header('Location: /bienesraices/admin');
+        exit;
+    }
 ?>
 
 <main class="contenedor contenido-centrado">

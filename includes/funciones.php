@@ -13,7 +13,7 @@ function validarLogin() {
     session_start();
 
     if(!$_SESSION['login']) {
-        header('Location: /');
+        header('Location: /bienesraices');
     } 
     
 }
@@ -26,6 +26,6 @@ function debuguear($variable) {
 }
 
 function sanitizarHTML($input) {
-    $entrada = htmlspecialchars(strip_tags($input));
+    $entrada = htmlspecialchars($input);
     return $entrada;
 }

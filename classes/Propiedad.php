@@ -76,7 +76,7 @@ class Propiedad
         $atributos = $this->atributos();
         $sanitizado = [];
         foreach ($atributos as $key => $value) {
-            $sanitizado[$key] = htmlspecialchars(strip_tags(self::$db->escape_string($value)));
+            $sanitizado[$key] = strip_tags(self::$db->escape_string($value));
         }
         return $sanitizado;
     }
@@ -126,7 +126,7 @@ class Propiedad
         return self::$errores;
     }
 
-    // Listar todas las pripiedades
+    // Listar todas las propiedades
     public static function all()
     {
         $query = "SELECT * FROM propiedades ORDER BY creado DESC";
@@ -134,6 +134,16 @@ class Propiedad
         $resultado = self::consultarSQL($query);
 
         return $resultado;
+    }
+
+    // Buscar propiedades por un id
+
+    public static function find($id){
+        $query = "SELECT * FROM propiedades WHERE id = {$id}";
+
+        $resultado = self::consultarSQL($query); 
+
+        return array_shift($resultado);
     }
 
     public static function consultarSQL($query)
@@ -165,5 +175,13 @@ class Propiedad
         }
 
         return $objeto;
+    }
+
+    public function sincronizar($args = []) {
+        foreach ($args as $key => $value) {
+            if(property_exists($this, $key) && !is_null($value)){
+                $this->$key = $value;
+            }            
+        }
     }
 }
