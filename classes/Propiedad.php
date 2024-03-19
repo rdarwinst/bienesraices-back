@@ -43,9 +43,18 @@ class Propiedad
         $this->vendedores_id = $args['vendedores_id'] ?? 1;
     }
 
-    public function guardar()
-    {
+    public function guardar() {
+        if(isset($this->id)) {
+            // Actualizando
+            $this->actualizar();
+        } else {
+            // Creando
+            $this->crear();
+        }
+    }
 
+    public function crear()
+    {
         $atributos  = $this->sanitizarAtributos();
 
         $query = "INSERT INTO propiedades ( ";
@@ -57,6 +66,26 @@ class Propiedad
         $resultado = self::$db->query($query);
 
         return $resultado;
+    }
+
+    public function actualizar() {
+        $atributos = $this->sanitizarAtributos();
+        $valores = [];
+
+        foreach ($atributos as $key => $value) {
+            $valores[] = "{$key}='{$value}'";
+        }
+
+        $query = "UPDATE propiedades SET ";
+        $query .= join(', ', $valores );
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id). "' ";
+        $query .= " LIMIT 1";
+
+        $resultado = self::$db -> query($query);
+
+        if ($resultado) {
+            header('Location: /bienesraices/admin?resultado=2');
+        }
     }
 
 
@@ -87,8 +116,17 @@ class Propiedad
     }
 
     // Subida de Archivos
-    public function  setImagen($imagen)
+    public function setImagen($imagen)
     {
+        // Validar si hay una imagen 
+        if (isset($this->id)) {
+            $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+
+            if ($existeArchivo) {
+                unlink(CARPETA_IMAGENES . $this->imagen);
+            }
+        }
+
         // Asignar al atributo imagen el nombre de la imagen
         if ($imagen) {
             $this->imagen = $imagen;
@@ -138,10 +176,11 @@ class Propiedad
 
     // Buscar propiedades por un id
 
-    public static function find($id){
+    public static function find($id)
+    {
         $query = "SELECT * FROM propiedades WHERE id = {$id}";
 
-        $resultado = self::consultarSQL($query); 
+        $resultado = self::consultarSQL($query);
 
         return array_shift($resultado);
     }
@@ -177,11 +216,12 @@ class Propiedad
         return $objeto;
     }
 
-    public function sincronizar($args = []) {
+    public function sincronizar($args = [])
+    {
         foreach ($args as $key => $value) {
-            if(property_exists($this, $key) && !is_null($value)){
+            if (property_exists($this, $key) && !is_null($value)) {
                 $this->$key = $value;
-            }            
+            }
         }
     }
 }
