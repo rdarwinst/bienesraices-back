@@ -34,6 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     // Validar 
     $errores = $propiedad->validarForm();
 
+    // debuguear($propiedad);
+
     if (empty($errores)) {
 
         //Crear una carpeta
@@ -45,12 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $image->save(CARPETA_IMAGENES . $nombreImagen);
 
         // Guarda en la BD
-        $resultado = $propiedad->guardar();
+        $propiedad->guardar();
 
-        // Mensaje de exito o error
-        if ($resultado) {
-            header('Location: /bienesraices/admin?resultado=1');
-        }
     }
 }
 

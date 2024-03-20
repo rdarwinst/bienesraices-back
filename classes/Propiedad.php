@@ -31,7 +31,7 @@ class Propiedad
 
     public function __construct($args = [])
     {
-        $this->id = $args['id'] ?? '';
+        $this->id = $args['id'] ?? null;
         $this->titulo = $args['titulo'] ?? '';
         $this->precio = $args['precio'] ?? '';
         $this->imagen = $args['imagen'] ?? '';
@@ -43,8 +43,9 @@ class Propiedad
         $this->vendedores_id = $args['vendedores_id'] ?? 1;
     }
 
-    public function guardar() {
-        if(isset($this->id)) {
+    public function guardar()
+    {
+        if (!is_null($this->id)) {
             // Actualizando
             $this->actualizar();
         } else {
@@ -64,11 +65,15 @@ class Propiedad
         $query .= " ') ";
 
         $resultado = self::$db->query($query);
-
-        return $resultado;
+        
+        // Mensaje de exito o error
+        if ($resultado) {
+            header('Location: /bienesraices/admin?resultado=1');
+        }        
     }
 
-    public function actualizar() {
+    public function actualizar()
+    {
         $atributos = $this->sanitizarAtributos();
         $valores = [];
 
@@ -77,14 +82,27 @@ class Propiedad
         }
 
         $query = "UPDATE propiedades SET ";
-        $query .= join(', ', $valores );
-        $query .= " WHERE id = '" . self::$db->escape_string($this->id). "' ";
+        $query .= join(', ', $valores);
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= " LIMIT 1";
 
-        $resultado = self::$db -> query($query);
+        $resultado = self::$db->query($query);
 
         if ($resultado) {
             header('Location: /bienesraices/admin?resultado=2');
+        }
+    }
+
+    // Eliminar un registro
+    public function eliminar()
+    {
+        $query = "DELETE FROM propiedades WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
+
+        $resultado = self::$db->query($query);
+
+        if ($resultado) {
+            $this->borrarImagen();
+            header('location: /bienesraices/admin?resultado=3');
         }
     }
 
@@ -119,17 +137,24 @@ class Propiedad
     public function setImagen($imagen)
     {
         // Validar si hay una imagen 
-        if (isset($this->id)) {
-            $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
-
-            if ($existeArchivo) {
-                unlink(CARPETA_IMAGENES . $this->imagen);
-            }
+        if (!is_null($this->id)) {
+            $this -> borrarImagen();
         }
 
         // Asignar al atributo imagen el nombre de la imagen
         if ($imagen) {
             $this->imagen = $imagen;
+        }
+    }
+
+    // Eliminar imagen 
+
+    public function borrarImagen()
+    {
+        $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+
+        if ($existeArchivo) {
+            unlink(CARPETA_IMAGENES . $this->imagen);
         }
     }
 
