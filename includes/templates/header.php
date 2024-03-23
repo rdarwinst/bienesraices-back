@@ -1,10 +1,10 @@
 <?php
-    
-    if(!isset($_SESSION)){
-        session_start(); 
-    }
 
-    $auth = $_SESSION['login'] ?? false;
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+$auth = $_SESSION['login'] ?? false;
 
 ?>
 
@@ -39,7 +39,8 @@
                         <a href="/bienesraices/anuncios.php">Anuncios</a>
                         <a href="/bienesraices/blog.php">Blog</a>
                         <a href="/bienesraices/contacto.php">Contacto</a>
-                        <?php if ($auth):?>
+                        <?php if ($auth) : ?>
+                            <a href="/bienesraices/admin/">Administrar</a>
                             <a href="/bienesraices/cerrar-sesion.php">Cerrar Sesión</a>
                         <?php endif; ?>
 

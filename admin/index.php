@@ -2,9 +2,11 @@
 require '../includes/app.php';
 
 use App\Propiedad;
+use App\Vendedor;
 
 // Implementar un método para obtener todas las propiedades usando active record
 $propiedades = Propiedad::all();
+$vendedores = Vendedor::all();
 
 // Mostrar mensaje condicional
 $resultado = $_GET['resultado'] ?? null;
@@ -52,7 +54,7 @@ incluirTemplate('header');
             <tbody><!-- Mostrar resultados -->
                 <?php foreach( $propiedades as $propiedad ): ?>
                     <tr>
-                        <td> <?php echo $propiedad->id; ?> </td>
+                        <td> <?php echo $propiedad-> id; ?> </td>
                         <td> <?php echo $propiedad->titulo; ?> </td>
                         <td><img src="../imagenes/<?php echo $propiedad->imagen; ?>" alt="Imagen de la propiedad" class="imagen-tabla"></td>
                         <td>$<?php echo $propiedad->precio; ?> </td>
@@ -72,7 +74,5 @@ incluirTemplate('header');
 </main>
 
 <?php
-// Cerrar la conexion
-mysqli_close($db);
 incluirTemplate('footer');
 ?>

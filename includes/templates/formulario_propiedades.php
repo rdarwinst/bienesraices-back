@@ -33,6 +33,10 @@
     <legend>Vendedor</legend>
 
     <select name="propiedad[vendedores_id]" id="vendedor">
-
+        <option value="" disabled selected>-- Seleccionar Vendedor --</option>
+        <?php foreach ($vendedores as $vendedor) : ?>
+            <option <?php echo $propiedad -> vendedores_id === $vendedor -> id ? 'selected' : '' ?>
+             value="<?php echo $vendedor->id; ?>"><?php echo sanitizarHTML($vendedor->nombre) . " " . sanitizarHTML($vendedor->apellido); ?></option>
+        <?php endforeach; ?>
     </select>
 </fieldset>

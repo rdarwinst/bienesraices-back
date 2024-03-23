@@ -2,16 +2,15 @@
 require '../../includes/app.php';
 
 use App\Propiedad;
+use App\Vendedor;
 use Intervention\Image\ImageManager as Image;
 use Intervention\Image\Drivers\Gd\Driver;
 
-$db = conectarDB();
-
 $propiedad = new Propiedad();
 
-// Consultar el listado de los vendedores, desde la BD
-$consulta = "SELECT * FROM vendedores";
-$resultado = mysqli_query($db, $consulta);
+// Consulta para obtener todos los vendedores
+
+$vendedores = Vendedor::all();
 
 $errores = Propiedad::getErrores();
 
