@@ -57,7 +57,7 @@ class ActiveRecord
             $valores[] = "{$key}='{$value}'";
         }
 
-        $query = "UPDATE". static::$tabla . " SET ";
+        $query = "UPDATE ". static::$tabla . " SET ";
         $query .= join(', ', $valores);
         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= " LIMIT 1";
@@ -87,7 +87,7 @@ class ActiveRecord
     public function atributos()
     {
         $atributos = [];
-        foreach (self::$columnasDB as $columna) {
+        foreach (static::$columnasDB as $columna) {
             if ($columna === 'id') continue;
             $atributos[$columna] = $this->$columna;
         }
@@ -155,7 +155,7 @@ class ActiveRecord
 
     public static function find($id)
     {
-        $query = "SELECT * FROM" . static::$tabla . " WHERE id = {$id}";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE id = {$id}";
 
         $resultado = self::consultarSQL($query);
 
@@ -170,7 +170,7 @@ class ActiveRecord
         // Iterar resultados
         $array = [];
         while ($registro = $resultado->fetch_assoc()) {
-            $array[] = self::crearObjeto($registro);
+            $array[] = static::crearObjeto($registro);
         }
 
         // Liberar la memoria

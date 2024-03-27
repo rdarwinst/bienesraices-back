@@ -11,7 +11,7 @@
     }
 }
 
-table.propiedades {
+table.propiedades, table.vendedores {
     margin-top: 4rem;
     width: 100%;
     border-spacing: 0;
@@ -33,13 +33,15 @@ table.propiedades {
         tr {
             text-align: center;
             padding: 1rem;
-            font-size: 2rem;     
-            text-transform: capitalize;      
+            font-size: 2rem;                      
         }
     }
 
     .imagen-tabla {
         width: 10rem;
+    }
+    a[href^="tel"], a[href^="mailto"] {
+        color: $negro;
     }
 }
 .imagen-sm {
@@ -50,4 +52,7 @@ table.propiedades {
 .tabla-responsive {
     width: 100%;
     overflow-x: auto;
+}
+.opacidad-50 {
+    opacity: 50%;
 }

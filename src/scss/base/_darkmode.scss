@@ -49,7 +49,11 @@
         }
     }
 
-    table.propiedades {
+    table.propiedades, table.vendedores {
         color: $blanco;
+
+        a[href^="tel"], a[href^="mailto"] {
+            color: $blanco;
+        }
     }
 }
