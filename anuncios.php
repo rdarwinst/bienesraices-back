@@ -6,8 +6,7 @@
     <main class="contenedor">
         <h1>Anuncios</h1>
 
-        <?php 
-            $limite = 10;
+        <?php
             include 'includes/templates/anuncios.php';
         ?>
     </main>

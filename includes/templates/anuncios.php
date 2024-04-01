@@ -1,44 +1,38 @@
 <?php
+use App\Propiedad;
 
-// Importar Conexion
-$db = conectarDB();
 
-// Consultar
-$query = "SELECT * FROM propiedades LIMIT {$limite}";
-
-// Leer u Obtener Resultados
-$resultado = mysqli_query($db, $query);
+if($_SERVER['SCRIPT_NAME'] === "/bienesraices/anuncios.php") {
+    $propiedades = Propiedad::all();
+} else {
+    $propiedades = Propiedad::get(3);
+}
 ?>
 
 <div class="contenedor-anuncios">
-    <?php while ($propiedad = mysqli_fetch_assoc($resultado)) : ?>
+    <?php foreach($propiedades as $propiedad) : ?>
         <div class="anuncio">
-            <img loading="lazy" src="/bienesraices/imagenes/<?php echo $propiedad['imagen']; ?>" alt="">
+            <img loading="lazy" src="/bienesraices/imagenes/<?php echo sanitizarHTML($propiedad->imagen); ?>" alt="">
             <div class="contenido-anuncio">
-                <h3><?php echo $propiedad['titulo'] ?></h3>
-                <p><?php echo substr($propiedad['descripcion'], 0, 125) . "..."; ?></p>
-                <p class="precio">$<?php echo $propiedad['precio']; ?></p>
+                <h3><?php echo sanitizarHTML($propiedad -> titulo); ?></h3>
+                <p><?php echo sanitizarHTML(substr($propiedad -> descripcion, 0, 120). "..."); ?></p>
+                <p class="precio">$<?php echo sanitizarHTML($propiedad -> precio); ?></p>
                 <ul class="iconos-caracteristicas">
                     <li>
                         <img class="icono" src="build/img/icono_wc.svg" alt="Icono WC">
-                        <p><?php echo $propiedad['wc']; ?></p>
+                        <p><?php echo sanitizarHTML($propiedad -> wc); ?></p>
                     </li>
                     <li>
                         <img class="icono" src="build/img/icono_estacionamiento.svg" alt="Icono Estacionamiento">
-                        <p><?php echo $propiedad['estacionamiento']; ?></p>
+                        <p><?php echo sanitizarHTML($propiedad->estacionamiento); ?></p>
                     </li>
                     <li>
                         <img class="icono" src="build/img/icono_dormitorio.svg" alt="Icono Dormitorio">
-                        <p><?php echo $propiedad['habitaciones']; ?></p>
+                        <p><?php echo sanitizarHTML($propiedad->habitaciones); ?></p>
                     </li>
                 </ul>
-                <a href="anuncio.php?id=<?php echo $propiedad['id']; ?>" class="boton-amarillo-block">Ver Propiedad</a>
+                <a href="anuncio.php?id=<?php echo sanitizarHTML($propiedad->id); ?>" class="boton-amarillo-block">Ver Propiedad</a>
             </div> <!-- .contenido-anuncio -->
         </div><!-- .anuncio -->
-    <?php endwhile; ?>
+    <?php endforeach; ?>
 </div><!-- .contenedor-anuncios -->
-
-<?php
-// Cerrar la conexion
-mysqli_close($db);
-?>
