@@ -10,25 +10,44 @@ document.addEventListener('DOMContentLoaded', function () {
 function darkmode() {
 
     const preferenciaUsuario = window.matchMedia('(prefers-color-scheme: dark)');
-    // console.log(preferenciaUsuario.matches);
 
-    if (preferenciaUsuario.matches) {
-        document.body.classList.add('dark-mode');
+    function establecerTema(preferencia) {
+        if (preferencia === 'dark') {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('tema', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('tema', 'light');
+        }
+    }
+
+    const preferencia = localStorage.getItem('tema');
+
+    if (preferencia === null) {
+        establecerTema(preferenciaUsuario.matches ? 'dark' : 'light');
     } else {
-        document.body.classList.remove('dark-mode');
+        establecerTema(preferencia);
     }
 
     preferenciaUsuario.addEventListener('change', function () {
         if (preferenciaUsuario.matches) {
             document.body.classList.add('dark-mode');
+            localStorage.setItem('tema', 'dark');
         } else {
             document.body.classList.remove('dark-mode');
+            localStorage.setItem('tema', 'light');
         }
     });
 
     const botonDarkMode = document.querySelector('.dark-mode-boton');
     botonDarkMode.addEventListener('click', function () {
         document.body.classList.toggle('dark-mode');
+
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('tema', 'dark');
+        } else {
+            localStorage.setItem('tema', 'light');
+        }
     });
 }
 
